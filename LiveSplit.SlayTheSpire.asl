@@ -1,4 +1,5 @@
-/*SlayTheSpire Autosplitter by ClownFiesta AKA FresherDenimAll
+/* Autosplitter v1.0
+SlayTheSpire Autosplitter by ClownFiesta AKA FresherDenimAll
 Hosted on https://github.com/ClownFiesta/AutoSplitters
 
 Please notify the author before attempting to publish a new AutoSplitter for the game,
