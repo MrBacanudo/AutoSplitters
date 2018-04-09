@@ -1,9 +1,12 @@
-/* Autosplitter v1.0
+/* Autosplitter v1.0 2018-04-09
 SlayTheSpire Autosplitter by ClownFiesta AKA FresherDenimAll
 Hosted on https://github.com/ClownFiesta/AutoSplitters
 
 Please notify the author before attempting to publish a new AutoSplitter for the game,
 I might be working on a new version already locally.
+
+Honorable mention: Phantom. He created the previous Autosplitter for the game which you can see at:
+https://github.com/Phxntxm/Slay-The-Spire-Autosplitter
  */
 
 state("SlayTheSpire")
