@@ -7,6 +7,9 @@ I might be working on a new version already locally.
 
 Honorable mention: Phantom. He created the previous Autosplitter for the game which you can see at:
 https://github.com/Phxntxm/Slay-The-Spire-Autosplitter
+
+ -  Mind Bloom split fix: 2020-10-23 by MrBacanudo
+
  */
 
 state("SlayTheSpire")
@@ -24,6 +27,8 @@ init
     vars.lastPointerPosition = vars.reader.BaseStream.Position;
     //Set the command to "UPDATE"
     vars.command = "UPDATE";
+    // Defines whether entered Mind Bloom event
+    vars.mindBloom = false;
 }
 
 update
@@ -41,19 +46,25 @@ update
     while((line = vars.reader.ReadLine()) != null){ //Read the log until its end
         //Updates vars.lastPointerPosition to its new position.
         vars.lastPointerPosition = vars.reader.BaseStream.Position;
-        
+
         //Changes the value of vars.command depending on the content of line and returns true if a command needs to be issued.
         if(line.Contains("Generating seeds")){
             vars.command = "START";
             return true;
+        } else if (timer.CurrentPhase == TimerPhase.Running & vars.mindBloom & System.Text.RegularExpressions.Regex.IsMatch(line, @"(Hard Unlock: )(GUARDIAN|GHOST|SLIME)")){
+            // Prevent timer splitting if inside mind bloom
+            vars.mindBloom = false;
+            continue;
         } else if (timer.CurrentPhase == TimerPhase.Running & System.Text.RegularExpressions.Regex.IsMatch(line, @"(Hard Unlock: )(GUARDIAN|GHOST|SLIME|CHAMP|AUTOMATON|COLLECTOR|CROW|DONUT|WIZARD)")){
             vars.command = "SPLIT";
             return true;
         } else if (System.Text.RegularExpressions.Regex.IsMatch(line, @"(PLAYTIME:)")){
             vars.command = "RESET";
             return true;
-            }
+        } else if(line.Contains("Removed event: MindBloom")){ // Whether entered mind bloom
+            vars.mindBloom = true;
         }
+    }
 
 }
 
@@ -61,6 +72,7 @@ reset
 {
     if (vars.command == "RESET"){
         vars.command = "UPDATE";
+        vars.mindBloom = false;
         return true;
     }
 }
@@ -77,6 +89,7 @@ start
 {
     if (vars.command == "START"){
         vars.command = "UPDATE";
+        vars.mindBloom = false;
         return true;
     }
 }
